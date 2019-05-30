@@ -8,3 +8,13 @@ C:\Users\jchristensen\source\repos\FaultyNetwork\FaultyNetwork\obj\Debug\FaultyN
 C:\Users\jchristensen\source\repos\FaultyNetwork\FaultyNetwork\obj\Debug\FaultyNetwork.csproj.CoreCompileInputs.cache
 C:\Users\jchristensen\source\repos\FaultyNetwork\FaultyNetwork\obj\Debug\FaultyNetwork.exe
 C:\Users\jchristensen\source\repos\FaultyNetwork\FaultyNetwork\obj\Debug\FaultyNetwork.pdb
+C:\Users\jacob\Desktop\code\FaultyNetwork\FaultyNetwork\obj\Debug\FaultyNetwork.exe
+C:\Users\jacob\Desktop\code\FaultyNetwork\FaultyNetwork\obj\Debug\FaultyNetwork.pdb
+C:\Users\jacob\Desktop\code\FaultyNetwork\FaultyNetwork\bin\Debug\FaultyNetwork.exe.config
+C:\Users\jacob\Desktop\code\FaultyNetwork\FaultyNetwork\bin\Debug\FaultyNetwork.exe
+C:\Users\jacob\Desktop\code\FaultyNetwork\FaultyNetwork\bin\Debug\FaultyNetwork.pdb
+C:\Users\jacob\Desktop\code\FaultyNetwork\FaultyNetwork\obj\Debug\FaultyNetwork.csprojAssemblyReference.cache
+C:\Users\jacob\Desktop\code\FaultyNetwork\FaultyNetwork\obj\Debug\FaultyNetwork.Form1.resources
+C:\Users\jacob\Desktop\code\FaultyNetwork\FaultyNetwork\obj\Debug\FaultyNetwork.Properties.Resources.resources
+C:\Users\jacob\Desktop\code\FaultyNetwork\FaultyNetwork\obj\Debug\FaultyNetwork.csproj.GenerateResource.cache
+C:\Users\jacob\Desktop\code\FaultyNetwork\FaultyNetwork\obj\Debug\FaultyNetwork.csproj.CoreCompileInputs.cache

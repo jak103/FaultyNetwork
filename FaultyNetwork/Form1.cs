@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Windows.Forms;
+using System.Text;
 
 namespace FaultyNetwork
 {
@@ -13,8 +14,8 @@ namespace FaultyNetwork
         private bool done = false;
         private UdpClient client1;
         private UdpClient client2;
-        private IPEndPoint client1Ep;
-        private IPEndPoint client2Ep;
+        private IPEndPoint client1Ep = null;
+        private IPEndPoint client2Ep = null;
 
 
         public Form1()
@@ -37,13 +38,16 @@ namespace FaultyNetwork
         private delegate void StringDelegate(string message);
         private void PrintText(string message)
         {
-            if (outputBox.InvokeRequired)
+            if (printCheckBox.Checked)
             {
-                outputBox.Invoke(new StringDelegate(PrintText), new object[] { message });
-            }
-            else
-            {
-                outputBox.AppendText(message + "\r\n");
+                if (outputBox.InvokeRequired)
+                {
+                    outputBox.Invoke(new StringDelegate(PrintText), new object[] { message });
+                }
+                else
+                {
+                    outputBox.AppendText(message + "\r\n");
+                }
             }
         }
 
@@ -72,13 +76,16 @@ namespace FaultyNetwork
                     if (bob.Next(1, 101) < corruptRate)
                     {
                         // corrupt this byte
-                        message[i] ^= (byte)(0x01 << bob.Next(1, 9));
+                        int shift = bob.Next(1, 9);
+                        message[i] ^= (byte)(0x01 << shift);
+                        PrintText(string.Format("Corrupted bit {0} of byte {1}", shift, i));
                     }
                 }                
             }
             else
             {
                 message = null;
+                PrintText("Dropped message");
             }
 
             return message;
@@ -90,11 +97,17 @@ namespace FaultyNetwork
             {
                 byte[] message = client1.Receive(ref client1Ep);
 
-                message = corruptThis(message);
-
-                if (message != null && client2.Client.Connected)
+                if (message.Length > 1 && message[0] != '~')
                 {
-                    client2.Send(message, message.Length);
+                    string text = Encoding.ASCII.GetString(message);
+                    PrintText("Client1: " + text);
+
+                    message = corruptThis(message);
+
+                    if (message != null && client2Ep != null)
+                    {
+                        client2.Send(message, message.Length, client2Ep);
+                    }
                 }
             }
         }
@@ -104,12 +117,17 @@ namespace FaultyNetwork
             while (!done)
             {
                 byte[] message = client2.Receive(ref client2Ep);
-
-                message = corruptThis(message);
-
-                if (message != null && client1.Client.Connected)
+                if (message.Length > 1 && message[0] != '~')
                 {
-                    client1.Send(message, message.Length);
+                    string text = Encoding.ASCII.GetString(message);
+                    PrintText("Client2: " + text);
+
+                    message = corruptThis(message);
+
+                    if (message != null && client1Ep != null)
+                    {
+                        client1.Send(message, message.Length, client1Ep);
+                    }
                 }
             }           
         }
@@ -119,7 +137,8 @@ namespace FaultyNetwork
             done = true;
             UdpClient temp = new UdpClient();
 
-            byte[] unblockMessage = new byte[3];
+            byte[] unblockMessage = new byte[1];
+            unblockMessage[0] = (byte)'~';
             temp.Send(unblockMessage, unblockMessage.Length, new IPEndPoint(IPAddress.Loopback, 1982));temp.Send(unblockMessage, unblockMessage.Length, new IPEndPoint(IPAddress.Loopback, 1982));
             temp.Send(unblockMessage, unblockMessage.Length, new IPEndPoint(IPAddress.Loopback, 1982));temp.Send(unblockMessage, unblockMessage.Length, new IPEndPoint(IPAddress.Loopback, 1983));
         }
